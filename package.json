@@ -1,0 +1,12 @@
+{
+  "name": "tb",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "start": "react-native start"
+  },
+  "dependencies": {
+    "react-native": "^0.15.0",
+    "react-native-icons": "^0.6.3"
+  }
+}
