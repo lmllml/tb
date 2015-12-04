@@ -54,7 +54,7 @@ export default class Router {
 }
 
 Router.initialRoute = {
-    name: 'home',
+    name: 'login',
     index: 0,
-    component: routeMap['home']
+    component: routeMap['login']
 }

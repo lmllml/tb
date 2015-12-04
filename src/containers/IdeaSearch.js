@@ -5,7 +5,9 @@ import React, {
     StyleSheet,
     View,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    StatusBarIOS
+
 } from 'react-native';
 
 import Service from '../service';
@@ -18,6 +20,7 @@ export default class IdeaSearch extends Component {
     constructor (props) {
         super(props);
 
+        StatusBarIOS.setStyle('default');
         this.state = {
             ideaList: []           
         };

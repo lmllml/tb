@@ -34,27 +34,47 @@ export default class Login extends Component {
         });
     }
 
+    onInputPw (text) {
+        this.setState({
+            pw: text
+        });
+    }
+    
+
     render () {
+        let userColor = "#b2b2b2";
+        let pwColor = "#b2b2b2";
+        if (this.state.misId) {
+            userColor = "#1c7ef6";
+        }
+        if (this.state.pw) {
+            pwColor = "#1c7ef6";
+        }
+
         return (
             <View style={styles.container}>
-                <View style={{marginTop: 160}}>
+                <View style={{marginTop: 80, marginBottom: 40, justifyContent: 'center', alignItems: 'center', height: 80}}>
                     <Image
+                        source={require('../imgs/avatar.png')}
                         style={{width: 80, height: 80, borderRadius: 40}}/>
                 </View>
-                <View style={{mariginTop: 70, paddingLeft: 15, paddingRight: 15, borderBottomWidth: 1, borderTopWidth: 1, borderColor: "#d7d7d7"}}>
+
+                <View style={{paddingLeft: 15, backgroundColor: "#fff", paddingRight: 15, borderBottomWidth: 1, borderTopWidth: 1, borderColor: "#d7d7d7"}}>
                     <View style={{height: 50, borderColor: "#dddddd", borderBottomWidth: 1, alignItems: 'center', flexDirection: 'row'}}>
                         <Icon
                             name="fontawesome|user"
+                            color={userColor}
                             size={20}
                             style={{width: 20, height: 20, marginRight: 10}}/>
                         <TextInput style={{flex: 1}} onChangeText={this.onInputMisId.bind(this)} placeholder="请输入账户"/>
                     </View>
                     <View style={{height: 50, alignItems: 'center', flexDirection: 'row'}}>
                         <Icon
-                            name="fontawesome|user"
+                            name="fontawesome|lock"
+                            color={pwColor}
                             size={20}
                             style={{width: 20, height: 20, marginRight: 10}}/>
-                        <TextInput style={{flex: 1}} placeholder="请输入密码"/>
+                        <TextInput secureTextEntry={true} style={{flex: 1}} onChangeText={this.onInputPw.bind(this)} placeholder="请输入密码"/>
                     </View>
                 </View>
 
