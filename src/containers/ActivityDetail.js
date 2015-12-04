@@ -38,6 +38,11 @@ export default class ActivityDetail extends Component {
                 });
             }
         });
+        Service.getAccount().then((account) => {
+            this.setState({
+                account
+            });
+        });
         Service.getActivityCommentList(this.props.id, 1, 80).then((data) => {
             if (this.mounted) {
                 this.setState({
@@ -94,17 +99,26 @@ export default class ActivityDetail extends Component {
         });
     }
 
+    isOwn () {
+        return this.state.account && 
+                this.state.detail && 
+                this.state.account.misId === this.state.detail.activity.misId; 
+    }
+
     render () {
-        let RightComponent = (
-            <TouchableOpacity onPress={this.edit.bind(this)}>
-                <Text style={{color: "#fff"}}>编辑</Text>
-            </TouchableOpacity>
-        );
+        let RightComponent = {};
+        if (this.isOwn()) {
+            RightComponent = (
+                <TouchableOpacity onPress={this.edit.bind(this)}>
+                    <Text style={{color: "#fff", fontSize: 16}}>编辑</Text>
+                </TouchableOpacity>
+            );
+        }
         return (
             <View style={styles.container}>
                 <Header hasBack={true} navigator={this.props.navigator} title="活动正文" RightComponent={RightComponent}/>
                 <ScrollView style={{flex: 1}}>
-                    <ActivityDetailBox detail={this.state.detail}/>
+                    <ActivityDetailBox isOwn={this.isOwn.bind(this)} detail={this.state.detail}/>
                     <View style={styles.sectionTitle}>
                         <Text style={{color: '#929292'}}>评论 {this.state.commentList.length}</Text>
                         <TouchableOpacity onPress={this.comment.bind(this)} style={{flexDirection: 'row', alignItems: 'center'}}>

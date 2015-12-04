@@ -34,6 +34,7 @@ export default class ActivityList extends Component {
     render () {
         return (
             <RefreshableListView
+                removeClippedSubviews={true}
                 dataSource={this.state.dataSource}
                 loadData={this.props.loadData}
                 style={{flex: 1, backgroundColor: '#f2f2f2'}}

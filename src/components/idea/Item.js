@@ -160,7 +160,8 @@ export default class IdeaItem extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#fff",
-        marginBottom: 20
+        marginBottom: 20,
+        overflow: 'hidden'
     },
 
     up: {

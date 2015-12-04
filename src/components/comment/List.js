@@ -34,6 +34,7 @@ export default class CommentList extends Component {
     render () {
         return (
             <ListView
+                removeClippedSubviews={true}
                 dataSource={this.state.dataSource}
                 style={{flex: 1, backgroundColor: '#fff'}}
                 renderRow={this.renderRow.bind(this)}/>

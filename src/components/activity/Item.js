@@ -165,7 +165,8 @@ export default class ActivityItem extends Component {
 const styles = StyleSheet.create({
     container: {
         backgroundColor: "#fff",
-        marginBottom: 10
+        marginBottom: 10,
+        overflow: 'hidden'
     },
     up: {
         paddingTop: 10,

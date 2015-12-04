@@ -11,38 +11,26 @@ import React, {
     TouchableHighlight
 } from 'react-native';
 
+import moment from 'moment';
 import Service from '../service';
 import { Icon } from 'react-native-icons';
 import Header from '../common/Header';
-
+import DatePicker from '../common/DatePicker';
 
 
 export default class AddIdea extends Component {
     constructor (props) {
         super(props);
         this.state = {
-            date: new Date(),
             datePicker: false
         };
     }
 
-    onDateChange (date) {
-        this.setState({
-            date
-        });
-    }
 
     submitIdea () {
-        Service.submitIdea(this.state.endDate.getTime(), this.content, this.person).then((idea) => {
+        Service.submitIdea(this.state.date.getTime(), this.content, this.person).then((idea) => {
             this.props.onSubmitIdea(idea);
         });
-    }
-
-    selectTime () {
-        this.setState({
-            endDate: this.state.date
-        });
-        this.hideDatePicker();
     }
 
     showDatePicker () {
@@ -51,10 +39,17 @@ export default class AddIdea extends Component {
         });
     }
 
-    hideDatePicker () {
+    cancel () {
         this.setState({
            datePicker: false  
         });
+    }
+
+    confirm (date) {
+        this.setState({
+            date
+        });
+        this.cancel();
     }
 
     render () {
@@ -87,10 +82,10 @@ export default class AddIdea extends Component {
                             截止时间
                         </Text>
                         {(() => {
-                            if (this.state.endDate) {
+                            if (this.state.date) {
                                 return (
                                     <Text style={{color: "#888", marginRight: 10}}>
-                                        {this.state.endDate.toDateString()}
+                                        {moment(this.state.date).format('YYYY-MM-DD HH:mm')}
                                     </Text>
                                 )
                             }
@@ -119,32 +114,12 @@ export default class AddIdea extends Component {
                         onChangeText={(text) => this.person = text}/>
                 </View>
 
-                {(() => {
-                    if (this.state.datePicker) {
-                        return (
-                            <View style={styles.date}>
-                                <View style={styles.datehead}>
-                                    <TouchableOpacity onPress={this.hideDatePicker.bind(this)}>
-                                        <Text style={{fontSize: 16, color: "#8e8e93"}}>
-                                            取消
-                                        </Text>
-                                    </TouchableOpacity>
-                                    <TouchableOpacity onPress={this.selectTime.bind(this)}>
-                                        <Text style={{fontSize: 16, color: "#b02633"}}>
-                                            确定
-                                        </Text>
-                                    </TouchableOpacity>
-                                </View>
-                                <DatePickerIOS
-                                    minimumDate={new Date()}
-                                    onDateChange={this.onDateChange.bind(this)}
-                                    date={this.state.date}
-                                    mode="date"
-                                    style={{alignSelf: 'center'}}/>
-                            </View>
-                        )
-                    }
-                })()}
+                <DatePicker
+                    date={this.state.date}
+                    visible={this.state.datePicker}
+                    cancel={this.cancel.bind(this)}
+                    confirm={this.confirm.bind(this)}/>
+                
             </View>
         )
     }
@@ -181,25 +156,5 @@ const styles = StyleSheet.create({
     sectionTitle: {
         color: "#000",
         fontSize: 16
-    },
-
-    date: {
-        backgroundColor: "#fff",
-        position: 'absolute',
-        left: 0,
-        right: 0,
-        bottom: 0
-    },
-
-    datehead: {
-        height: 40,
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingLeft: 30,
-        paddingRight: 30,
-        justifyContent: 'space-between',
-        borderColor: "d9d9d9",
-        borderTopWidth: 1,
-        borderBottomWidth: 1,
     }
 });

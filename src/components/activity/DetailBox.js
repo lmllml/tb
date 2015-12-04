@@ -91,7 +91,7 @@ export default class ActivityItem extends Component {
                                 <Text style={{color: "gray"}}>活动结束</Text>
                             );    
                         } else {
-                                if (!this.detail.participate) {
+                                if (!this.state.detail.participate) {
                                     return (
                                         <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={this.participate.bind(this)}>
                                             <Text style={{color: "red"}}>GO</Text>
@@ -132,23 +132,25 @@ export default class ActivityItem extends Component {
                     参与者:
                     {(() => {
                         return this.state.detail.participateUsers.map(function (user) {
-                            return user.name
+                            return user.name + '、'
                         });
                     })()}
                 </Text>
                 {(() => {
-                    if (this.state.detail.activity.status === 1) {
-                        return (
-                            <TouchableOpacity style={styles.button} onPress={this.startActivity.bind(this)}>
-                                <Text style={{color: "#fff", fontSize: 16}}>活动开始</Text>
-                            </TouchableOpacity>            
-                        );
-                    } else if (this.state.detail.activity.status === 2) {
-                        return (
-                            <TouchableOpacity style={styles.button} onPress={this.endActivity.bind(this)}>
-                                <Text style={{color: "#fff", fontSize: 16}}>活动结束</Text>
-                            </TouchableOpacity>
-                        );
+                    if (this.props.isOwn()) {
+                        if (this.state.detail.activity.status === 1) {
+                            return (
+                                <TouchableOpacity style={styles.button} onPress={this.startActivity.bind(this)}>
+                                    <Text style={{color: "#fff", fontSize: 16}}>活动开始</Text>
+                                </TouchableOpacity>            
+                            );
+                        } else if (this.state.detail.activity.status === 2) {
+                            return (
+                                <TouchableOpacity style={styles.button} onPress={this.endActivity.bind(this)}>
+                                    <Text style={{color: "#fff", fontSize: 16}}>活动结束</Text>
+                                </TouchableOpacity>
+                            );
+                        }
                     }
                 })()}
                 

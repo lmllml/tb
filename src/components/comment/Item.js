@@ -71,7 +71,8 @@ const styles = StyleSheet.create({
         paddingBottom: 10,
         borderColor: "#dadada",
         borderBottomWidth: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
+        overflow: 'hidden'
     },
         
     left: {

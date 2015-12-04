@@ -33,6 +33,7 @@ export default class IdeaList extends Component {
     render () {
         return (
             <ListView
+                removeClippedSubviews={true}
                 style={{flex: 1, backgroundColor: '#f2f2f2'}}
                 dataSource={this.state.dataSource}
                 renderRow={this.renderRow.bind(this)}/>
