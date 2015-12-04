@@ -5,57 +5,155 @@ import React, {
     Text,
     StyleSheet,
     View,
+    Image,
     TouchableOpacity,
     TouchableHighlight
 } from 'react-native';
 
+import Service from '../../service';
 import { Icon } from 'react-native-icons';
 
 export default class ActivityItem extends Component {
-    goToActivityDetail () {
-        this.props.navigator.push('activityDetail');
+    constructor (props) {
+        super(props);
+        this.state = {
+            isPraise: props.data.praise,
+            praiseNum: props.data.praiseNum,
+            participate: props.data.participate,
+            participateNum: props.data.participateNum
+        }
     }
+
+    goToActivityDetail (id) {
+        this.props.navigator.push('activityDetail', {id});
+    }
+
+    goToComment () {
+        this.props.navigator.push('activityDetail', {id: this.props.data.activity.id, comment: true});
+    }
+
+    praise () {
+        Service.praiseActivity(this.props.data.activity.id);
+        this.setState({
+            isPraise: true,
+            praiseNum: this.state.praiseNum + 1 
+        });
+    }
+
+    unpraise () {
+        Service.praiseActivity(this.props.data.activity.id);
+        this.setState({
+            isPraise: false,
+            praiseNum: this.state.praiseNum - 1 
+        });
+    }
+
+    participate () {
+        Service.participateActivity(this.props.data.activity.id);
+        
+        this.setState({
+            participate: true,
+            participateNum: this.state.participateNum + 1
+        });
+    }
+
+    unparticipate () {
+        Service.participateActivity(this.props.data.activity.id);
+
+        this.setState({
+            participate: false,
+            participateNum: this.state.participateNum - 1
+        });
+    }
+
     render () {
         return (
-            <TouchableHighlight underlayColor="#efefef" onPress={this.goToActivityDetail.bind(this)} style={styles.container}>
+            <TouchableHighlight underlayColor="#efefef" onPress={this.goToActivityDetail.bind(this, this.props.data.activity.id)} style={styles.container}>
                 <View>
                     <View style={styles.up}>
-                        <Icon
-                            name="fontawesome|user"
-                            size={40}
-                            style={{width: 40, height: 40}} />
-                        <Text style={{color: "#333", marginLeft: 10}}>思聪</Text>
-                        <Text style={{color: "#828282", marginLeft: 10}}>2012-12-1 00:21</Text>
+                        <Image
+                            source={{uri: this.props.data.activity.avatar}}
+                            style={{width: 40, height: 40, borderRadius: 20}}/>
+
+                        <Text style={{color: "#333", marginLeft: 10}}>{this.props.data.activity.misName}</Text>
+                        <Text style={{color: "#828282", marginLeft: 10}}>{new Date(this.props.data.activity.ctime).toDateString()}</Text>
+                        <Text style={{flex: 1, color: "green", textAlign: 'right'}}>{this.state.participateNum}人</Text>
                     </View>
                     <View style={styles.center}>
                         <Text style={styles.text}>
-                            时间: 12121212
+                            时间: {new Date(this.props.data.activity.ctime).toDateString() + ' - ' + new Date(this.props.data.activity.ctime).toDateString()}
                         </Text>
                         
                         <Text style={styles.text}>
-                            地点: 12121212
+                            地点: {this.props.data.activity.location}
                         </Text>
 
                         <Text style={styles.text}>
-                            简介: 呵呵呵
+                            简介: {this.props.data.activity.brief}
                         </Text>
                     </View>
                     <View style={styles.down}>
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={this.props.goToComment || this.goToComment.bind(this)} style={{flexDirection: 'row', alignItems: 'center'}}>
                             <Icon
                                 name={"fontawesome|comments-o"}
                                 size={20}
-                                style={{width: 20, height: 20}}/>
+                                color="#636363"
+                                style={{width: 20, height: 20, marginRight: 5}}/>
+                            <Text>{this.props.data.commentNum}</Text>
                         </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Text>参与</Text>
-                        </TouchableOpacity>
-                        <TouchableOpacity>
-                            <Icon
-                                name={"fontawesome|thumbs-o-up"}
-                                size={20}
-                                style={{width: 20, height: 20}}/>
-                        </TouchableOpacity>
+                        
+                        {(()=> {
+                            if (this.props.data.activity.status === 2) {
+                                return (
+                                    <Text style={{color: "gray"}}>活动已开始</Text>
+                                );    
+                            } else if (this.props.data.activity.status === 3) {
+                                return (
+                                    <Text style={{color: "gray"}}>活动已结束</Text>
+                                );    
+                            } else {
+                                if (!this.state.participate) {
+                                    return (
+                                        <TouchableOpacity onPress={this.participate.bind(this)}>
+                                            <Text style={{color: "red"}}>GO</Text>
+                                        </TouchableOpacity>
+                                    );    
+                                } else {
+                                    return (
+                                        <TouchableOpacity onPress={this.unparticipate.bind(this)}>
+                                            <Text style={{color: "gray"}}>NOT GO</Text>
+                                        </TouchableOpacity>
+                                    );
+                                }
+                            }
+                        })()}
+
+                        {(() => {
+                            if (this.state.isPraise) {
+                                return (
+                                    <TouchableOpacity onPress={this.unpraise.bind(this)} style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <Icon
+                                            name={"fontawesome|thumbs-o-up"}
+                                            size={20}
+                                            color="red"
+                                            style={{width: 20, height: 20,  marginRight: 5}}/>
+                                        <Text style={{color: "red"}}>{this.state.praiseNum}</Text>
+                                    </TouchableOpacity>            
+                                );
+                            } else {
+                                return (
+                                    <TouchableOpacity onPress={this.praise.bind(this)} style={{flexDirection: 'row', alignItems: 'center'}}>
+                                        <Icon
+                                            name={"fontawesome|thumbs-o-up"}
+                                            size={20}
+                                            color="#636363"
+                                            style={{width: 20, height: 20,  marginRight: 5}}/>
+                                        <Text>{this.state.praiseNum}</Text>
+                                    </TouchableOpacity>            
+                                );
+                            }
+                        })()}
+                        
                     </View>
                 </View>
             </TouchableHighlight>

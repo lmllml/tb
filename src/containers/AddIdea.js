@@ -11,6 +11,7 @@ import React, {
     TouchableHighlight
 } from 'react-native';
 
+import Service from '../service';
 import { Icon } from 'react-native-icons';
 import Header from '../common/Header';
 
@@ -28,6 +29,12 @@ export default class AddIdea extends Component {
     onDateChange (date) {
         this.setState({
             date
+        });
+    }
+
+    submitIdea () {
+        Service.submitIdea(this.state.endDate.getTime(), this.content, this.person).then((idea) => {
+            this.props.onSubmitIdea(idea);
         });
     }
 
@@ -58,7 +65,7 @@ export default class AddIdea extends Component {
         );
 
         let rightComponent = (
-            <TouchableOpacity onPress={this.props.close}>
+            <TouchableOpacity onPress={this.submitIdea.bind(this)}>
                 <Text style={{color: "#20d81f", fontSize: 15}}>发送</Text>
             </TouchableOpacity>
         );
@@ -67,7 +74,7 @@ export default class AddIdea extends Component {
 
             <View style={styles.container}>
                 <Header title="发表点子" LeftComponent={leftComponent} RightComponent={rightComponent}/>
-                <TextInput multiline={true} maxLength={150} style={styles.textInput}/>
+                <TextInput onChangeText={(text) => this.content = text} multiline={true} maxLength={150} style={styles.textInput}/>
                 <TouchableHighlight style={{marginBottom: 10}} onPress={this.showDatePicker.bind(this)}>
                     <View style={styles.section}>
                         <Icon
@@ -106,8 +113,9 @@ export default class AddIdea extends Component {
                     <Text style={styles.sectionTitle}>限定人数</Text>
 
                     <TextInput 
-                        style={{flex: 1, marginLeft: 10, marginRight: 10}}
-                        keyboardType="numeric"/>
+                        style={{flex: 1, marginLeft: 10, marginRight: 10, textAlign: 'right'}}
+                        keyboardType="numeric"
+                        onChangeText={(text) => this.person = text}/>
                 </View>
 
                 {(() => {

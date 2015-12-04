@@ -11,15 +11,13 @@ import React, {
 import Service from '../service';
 import { Icon } from 'react-native-icons';
 import SearchHeader from '../common/SearchHeader';
-import IdeaList from '../components/idea/List';
-
+import ActivityList from '../components/activity/List';
 
 export default class IdeaSearch extends Component {
     constructor (props) {
         super(props);
-
         this.state = {
-            ideaList: []           
+            activityList: {}
         };
     }
 
@@ -33,10 +31,10 @@ export default class IdeaSearch extends Component {
 
 
     onSubmitEditing (text) {
-        Service.getIdeaList(text, 1, 20).then((ideaList) => {
+        Service.getActivityList(text, 1, 20).then((activityList) => {
             if (this.mounted) {
                 this.setState({
-                    ideaList
+                    activityList
                 });
             }
         });
@@ -46,7 +44,12 @@ export default class IdeaSearch extends Component {
         return (
             <View style={{flex: 1}}>
                 <SearchHeader navigator={this.props.navigator} onSubmitEditing={this.onSubmitEditing.bind(this)}/>
-                <IdeaList navigator={this.props.navigator} data={this.state.ideaList}/>
+                {(()=> {
+                    if (this.state.activityList.activities) {
+                        return  <ActivityList navigator={this.props.navigator} data={this.state.activityList.activities}/>;
+                    }
+                })()}
+               
             </View>
         );
     }

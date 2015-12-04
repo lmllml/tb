@@ -6,6 +6,7 @@ import React, {
 } from 'react-native';
 
 
+import RefreshableListView from 'react-native-refreshable-listview';
 import ActivityItem from './Item';
 
 export default class ActivityList extends Component {
@@ -24,16 +25,17 @@ export default class ActivityList extends Component {
         });
     }
 
-    renderRow () {
+    renderRow (row) {
         return (
-            <ActivityItem navigator={this.props.navigator}/>
+            <ActivityItem data={row} navigator={this.props.navigator}/>
         );
     }
 
     render () {
         return (
-            <ListView
+            <RefreshableListView
                 dataSource={this.state.dataSource}
+                loadData={this.props.loadData}
                 style={{flex: 1, backgroundColor: '#f2f2f2'}}
                 renderRow={this.renderRow.bind(this)}/>
         );

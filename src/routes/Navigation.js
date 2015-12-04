@@ -17,7 +17,6 @@ export default class Navigation extends Component {
     render () {
         return (
              <Navigator
-                configureScene={(route) => Navigator.SceneConfigs.HorizontalSwipeJump}
                 initialRoute={Router.initialRoute}
                 renderScene={this._renderScene.bind(this)} />
         );

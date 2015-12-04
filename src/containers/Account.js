@@ -4,31 +4,85 @@ import React, {
     Component,
     View,
     Text,
+    Image,
+    TouchableOpacity,
     StyleSheet
 } from 'react-native';
 
+import Service from '../service';
 import { Icon } from 'react-native-icons';
 
 export default class Account extends Component {
+    constructor (props) {
+        super(props);
+        this.state = {
+            account: {}
+        };
+    }
+
+    componentDidMount () {
+        this.mounted = true;
+        this.fetchAccount();
+    }
+
+    componentWillMount () {
+        this.mounted = false;
+    }
+
+    fetchAccount () {
+        Service.getAccount().then((account) => {
+            if (this.mounted) {
+                this.setState({
+                    account
+                });
+            }
+        });
+    }
+
+    goToMyIdeaList () {
+        this.props.navigator.push('myIdea')
+    }
+
+    goToCareIdeaList () {
+        this.props.navigator.push('careIdea');
+    }
+
+    goToMyActivity () {
+        this.props.navigator.push('myActivity');
+    }
+
     render () {
         return (
             <View style={styles.container}>
                 <View style={styles.up}>
-                    <Icon 
-                        name={"fontawesome|user"}
-                        size={40}
-                        style={{width: 40, height: 40, marginBottom: 10}}/>
+                    <Image
+                        source={{uri: this.state.account.avatar}}
+                        style={{width: 60, height: 60, borderRadius: 30, marginBottom: 10}}/>
+                    
                     <Text style={{color: "#fff", marginBottom: 10}}>
-                        思聪
+                        {this.state.account.name}
                     </Text>
                     <Text style={{color: "#fff", marginBottom: 10}}>
-                        13817899872
+                        {this.state.account.mobile}
                     </Text>
                     <Text style={{color: "#fff"}}>
-                        总部/外卖事业群/商超业务部
+                        {this.state.account.orgInfo}
                     </Text>
                 </View>
-                <View style={styles.section}>
+
+                <TouchableOpacity onPress={this.goToCareIdeaList.bind(this)} style={styles.section}>
+                    <Text style={styles.sectionTitle}>
+                        我关注的点子
+                    </Text>
+
+                    <Icon
+                        name={"fontawesome|chevron-right"}
+                        size={20}
+                        color="#000"
+                        style={{width: 20, height: 20}}/>
+                </TouchableOpacity> 
+
+                <TouchableOpacity onPress={this.goToMyIdeaList.bind(this)} style={styles.section}>
                     <Text style={styles.sectionTitle}>
                         我的点子
                     </Text>
@@ -38,19 +92,20 @@ export default class Account extends Component {
                         size={20}
                         color="#000"
                         style={{width: 20, height: 20}}/>
-                </View>
+                </TouchableOpacity>
                 
-                <View style={styles.section}>
+
+                <TouchableOpacity onPress={this.goToMyActivity.bind(this)} style={styles.section}>
                     <Text style={styles.sectionTitle}>
-                        我的活动
+                        我参与的活动
                     </Text>
 
                     <Icon
                         name={"fontawesome|chevron-right"}
                         size={20}
-                        color="#000"
+                        color="#000 "
                         style={{width: 20, height: 20}}/>
-                </View> 
+                </TouchableOpacity> 
             </View>
         );
         

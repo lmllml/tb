@@ -3,23 +3,114 @@
 import React, {
     Component,
     Text,
+    Image,
     StyleSheet,
-    View
+    View,
+    TouchableOpacity
 } from 'react-native';
 
+import Service from '../../service';
 import { Icon } from 'react-native-icons';
 
 export default class ActivityItem extends Component {
+    constructor (props) {
+        super(props);
+        this.state = {
+        };
+    }
+
+    componentDidMount () {
+        this.mounted = true;
+        Service.getActivityDetail(this.props.id).then((data) => {
+            if (this.mounted) {
+                this.setState({
+                    detail: data
+                });
+            }
+        });
+    }
+
+    participate () {
+        Service.participateActivity(this.state.detail.activity.id);
+        let detail = this.state.detail;
+        detail.participate = true;
+        detail.participateNum += 1;
+        this.setState({
+            detail
+        });
+    }
+
+    unparticipate () {
+        Service.participateActivity(this.state.detail.activity.id);
+        let detail = this.state.detail;
+        detail.participate = false;
+        detail.participateNum -= 1;
+        this.setState({
+            detail
+        });
+    }
+
+    startActivity () {
+        Service.startActivity(this.state.detail.activity.id);
+        let detail = this.state.detail;
+        detail.activity.status = 2;
+        this.setState({
+            detail
+        });
+    }
+
+    endActivity () {
+        Service.endActivity(this.state.detail.activity.id);
+        let detail = this.state.detail;
+        detail.activity.status = 3;
+        this.setState({
+            detail
+        });
+    }
+
+    componentWillUnMount () {
+        this.mounted = false;
+    }
+
     render () {
+        if (!this.state.detail) {
+            return (<View></View>);
+        }
         return (
             <View style={styles.container}>
                 <View style={styles.up}>
-                    <Icon
-                        name="fontawesome|user"
-                        size={40}
-                        style={{width: 40, height: 40}} />
-                    <Text style={{color: "#333", marginLeft: 10}}>思聪</Text>
-                    <Text style={{color: "#828282", marginLeft: 10}}>2012-12-1 00:21</Text>
+                    <Image
+                        source={{uri: this.state.detail.activity.avatar}}
+                        style={{width: 40, height: 40, borderRadius: 20}}/>
+                    <Text style={{color: "#333", marginLeft: 10}}>{this.state.detail.activity.misName}</Text>
+                    <Text style={{color: "#828282", marginLeft: 10, marginRight: 10}}>{new Date(this.state.detail.activity.ctime).toDateString()}</Text>
+                      {(()=> {
+                        if (this.state.detail.activity.status === 2) {
+                            return (
+                                <Text style={{color: "gray"}}>活动开始</Text>
+                            );    
+                        } else if (this.state.detail.activity.status === 3) {
+                            return (
+                                <Text style={{color: "gray"}}>活动结束</Text>
+                            );    
+                        } else {
+                                if (!this.state.detail.participate) {
+                                    return (
+                                        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={this.participate.bind(this)}>
+                                            <Text style={{color: "red"}}>GO</Text>
+                                        </TouchableOpacity>
+                                    );    
+                                } else {
+                                    return (
+                                        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={this.unparticipate.bind(this)}>
+                                            <Text style={{color: "gray"}}>NOT GO</Text>
+                                        </TouchableOpacity>
+                                    );
+                                }    
+                            }
+                            
+                        })()}
+                    <Text style={{color: "green", marginLeft: 10}}>{this.state.detail.participateNum}人</Text> 
                 </View>
                 
                 <Text style={styles.text}>
@@ -27,17 +118,44 @@ export default class ActivityItem extends Component {
                 </Text>
                 
                 <Text style={styles.text}>
-                    地点: 12121212
+                    地点: {this.state.detail.activity.location}
                 </Text>
 
                 <Text style={styles.text}>
-                    简介: 呵呵呵
+                    简介: {this.state.detail.activity.breif}
                 </Text>
 
 
                 <Text style={styles.text}>
-                    详情: 呵呵呵
+                    详情: {this.state.detail.activity.content}
                 </Text>
+
+                <Text style={styles.text}>
+                    参与者:
+                    {(() => {
+                        return this.state.detail.participateUsers.map(function (user) {
+                            return user.name
+                        });
+                    })()}
+                </Text>
+                {(() => {
+                    if (this.state.detail.activity.status === 1) {
+                        return (
+                            <TouchableOpacity style={styles.button} onPress={this.startActivity.bind(this)}>
+                                <Text style={{color: "#fff", fontSize: 16}}>活动开始</Text>
+                            </TouchableOpacity>            
+                        );
+                    } else if (this.state.detail.activity.status === 2) {
+                        return (
+                            <TouchableOpacity style={styles.button} onPress={this.endActivity.bind(this)}>
+                                <Text style={{color: "#fff", fontSize: 16}}>活动结束</Text>
+                            </TouchableOpacity>
+                        );
+                    }
+                })()}
+                
+
+               
             </View>
         );
     }
@@ -53,5 +171,25 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
-    text: {color: "#5d5d5d", marginTop: 10, marginBottom: 10}
+    text: {
+        color: "#5d5d5d", 
+        marginTop: 10,
+        marginBottom: 10
+    },
+    down: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        padding: 5,
+        borderColor: "#897d73",
+        borderTopWidth: 1
+    },
+    button: {
+        alignSelf: 'center',
+        backgroundColor: "#ff880a",
+        height: 30,
+        width: 100,
+        borderRadius: 5,
+        alignItems: 'center',
+        justifyContent: 'center'
+    }
 });

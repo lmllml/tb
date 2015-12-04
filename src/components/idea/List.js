@@ -8,7 +8,7 @@ import React, {
 
 import IdeaItem from './Item';
 
-export default class Idea extends Component {
+export default class IdeaList extends Component {
     constructor (props) {
         super(props);
 
@@ -24,16 +24,16 @@ export default class Idea extends Component {
         });
     }
 
-    renderRow () {
+    renderRow (row) {
         return (
-            <IdeaItem navigator={this.props.navigator}/>
+            <IdeaItem navigator={this.props.navigator} idea={row}/>
         );
     }
 
     render () {
         return (
             <ListView
-                style={{flex: 1}}
+                style={{flex: 1, backgroundColor: '#f2f2f2'}}
                 dataSource={this.state.dataSource}
                 renderRow={this.renderRow.bind(this)}/>
         );

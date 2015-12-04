@@ -13,6 +13,7 @@ export default class CommentList extends Component {
         super(props);
 
         let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
         this.state = {
             dataSource: ds.cloneWithRows(this.props.data)
         }
@@ -24,9 +25,9 @@ export default class CommentList extends Component {
         });
     }
 
-    renderRow () {
+    renderRow (row) {
         return (
-            <CommentItem />
+            <CommentItem comment={row}/>
         );
     }
 
