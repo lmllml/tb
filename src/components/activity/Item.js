@@ -10,6 +10,7 @@ import React, {
     TouchableHighlight
 } from 'react-native';
 
+import moment from 'moment';
 import Service from '../../service';
 import { Icon } from 'react-native-icons';
 
@@ -76,12 +77,12 @@ export default class ActivityItem extends Component {
                             style={{width: 40, height: 40, borderRadius: 20}}/>
 
                         <Text style={{color: "#333", marginLeft: 10}}>{this.props.data.activity.misName}</Text>
-                        <Text style={{color: "#828282", marginLeft: 10}}>{new Date(this.props.data.activity.ctime).toDateString()}</Text>
+                        <Text style={{color: "#828282", marginLeft: 10}}>{moment(this.props.data.activity.ctime).format('YYYY-MM-DD hh:mm')}</Text>
                         <Text style={{flex: 1, color: "green", textAlign: 'right'}}>{this.state.participateNum}人</Text>
                     </View>
                     <View style={styles.center}>
                         <Text style={styles.text}>
-                            时间: {new Date(this.props.data.activity.ctime).toDateString() + ' - ' + new Date(this.props.data.activity.ctime).toDateString()}
+                            时间: {moment(this.props.data.activity.startTime).format('YYYY-MM-DD hh:mm') + ' - ' + moment(this.props.data.activity.endTime).format('YYYY-MM-DD hh:mm')}
                         </Text>
                         
                         <Text style={styles.text}>

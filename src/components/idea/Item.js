@@ -10,7 +10,7 @@ import React, {
     TouchableHighlight
 } from 'react-native';
 
-
+import moment from 'moment';
 import Service from '../../service';
 import { Icon } from 'react-native-icons';
 
@@ -78,7 +78,7 @@ export default class IdeaItem extends Component {
                             style={{width: 40, height: 40, borderRadius: 20, marginRight: 10}}/>
                         
                         <Text>{this.props.idea.misName}</Text>
-                        <Text style={{marginLeft: 10, color: "#828282"}}>截止到{new Date(this.props.idea.expireTime).toDateString()}</Text>
+                        <Text style={{marginLeft: 10, color: "#828282"}}>{moment(this.props.idea.expireTime).format('YYYY-MM-DD hh:mm')}前有效</Text>
                         <View style={{flexDirection: 'row', alignItems: 'center', flex: 1, justifyContent: 'flex-end'}}>
                             <Text style={{marginLeft: 10}}>
                                 <Text style={{color: "red"}}>{this.state.participateNum}</Text>/<Text style={{color: "green"}}>{this.props.idea.limit}</Text>

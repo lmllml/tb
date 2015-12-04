@@ -28,6 +28,9 @@ let Service = {
     submitActivityComment: (id, text) => fetch(HOST + `/api/activity/comment/create?activityId=${id}&content=${text}`),
     startActivity: (id) => fetch(HOST + `/api/activity/${id}/start`),
     endActivity: (id) => fetch(HOST + `/api/activity/${id}/end`),  
+    submitActivity: (id, brief, content, location, startTime, endTime) => {
+        return fetch(HOST + `/api/activity/${id}/submit?brief=${brief}&content=${content}&location=${location}&startTime=${startTime}&endTime=${endTime}`)
+    }
 };
 
 export default Service;

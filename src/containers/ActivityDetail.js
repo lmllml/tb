@@ -16,6 +16,7 @@ import Service from '../service';
 import ActivityDetailBox from '../components/activity/DetailBox';
 import Header from '../common/Header';
 import CommentList from '../components/comment/List';
+import ActivityEdit from './ActivityEdit';
 
 export default class ActivityDetail extends Component {
     constructor (props) {
@@ -23,8 +24,31 @@ export default class ActivityDetail extends Component {
 
         this.state = {
             commentList: [],
-            modalVisible: props.comment || false
+            modalVisible: props.comment || false,
+            editVisible: false
         };
+    }
+
+    componentDidMount () {
+        this.mounted = true;
+        Service.getActivityDetail(this.props.id).then((data) => {
+            if (this.mounted) {
+                this.setState({
+                    detail: data
+                });
+            }
+        });
+        Service.getActivityCommentList(this.props.id, 1, 80).then((data) => {
+            if (this.mounted) {
+                this.setState({
+                    commentList: data
+                });
+            }
+        });
+    }
+    
+    componentWillUnMount () {
+        this.mounted = false;
     }
 
     comment () {
@@ -51,27 +75,36 @@ export default class ActivityDetail extends Component {
         this.closeComment();
     }
 
-    componentDidMount () {
-        this.mounted = true;
-        Service.getActivityCommentList(this.props.id, 1, 80).then((data) => {
-            if (this.mounted) {
-                this.setState({
-                    commentList: data
-                });
-            }
+
+    edit () {
+        this.setState({
+            editVisible: true
         });
     }
 
-    componentWillUnMount () {
-        this.mounted = false;
+    refresh (detail) {
+        this.setState({
+            detail
+        });
+    }
+
+    closeEdit () {
+        this.setState({
+            editVisible: false
+        });
     }
 
     render () {
+        let RightComponent = (
+            <TouchableOpacity onPress={this.edit.bind(this)}>
+                <Text style={{color: "#fff"}}>编辑</Text>
+            </TouchableOpacity>
+        );
         return (
             <View style={styles.container}>
-                <Header hasBack={true} navigator={this.props.navigator} title="活动正文"/>
+                <Header hasBack={true} navigator={this.props.navigator} title="活动正文" RightComponent={RightComponent}/>
                 <ScrollView style={{flex: 1}}>
-                    <ActivityDetailBox id={this.props.id}/>
+                    <ActivityDetailBox detail={this.state.detail}/>
                     <View style={styles.sectionTitle}>
                         <Text style={{color: '#929292'}}>评论 {this.state.commentList.length}</Text>
                         <TouchableOpacity onPress={this.comment.bind(this)} style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -84,9 +117,13 @@ export default class ActivityDetail extends Component {
                     </View>
                     <CommentList data={this.state.commentList}/>
                 </ScrollView>
-                
+
                 <Modal animated={true} visible={this.state.modalVisible}>
                     <Publish close={this.closeComment.bind(this)} submit={this.submitComment.bind(this)}/>
+                </Modal>
+
+                <Modal animated={true} visible={this.state.editVisible}>
+                    <ActivityEdit detail={this.state.detail} close={this.closeEdit.bind(this)} refresh={this.refresh.bind(this)}/>
                 </Modal>
             </View>
         );

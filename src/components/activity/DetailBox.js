@@ -9,6 +9,7 @@ import React, {
     TouchableOpacity
 } from 'react-native';
 
+import moment from 'moment';
 import Service from '../../service';
 import { Icon } from 'react-native-icons';
 
@@ -16,17 +17,13 @@ export default class ActivityItem extends Component {
     constructor (props) {
         super(props);
         this.state = {
+            detail: props.detail
         };
     }
 
-    componentDidMount () {
-        this.mounted = true;
-        Service.getActivityDetail(this.props.id).then((data) => {
-            if (this.mounted) {
-                this.setState({
-                    detail: data
-                });
-            }
+    componentWillReceiveProps (props) {
+        this.setState({
+            detail: props.detail
         });
     }
 
@@ -61,7 +58,7 @@ export default class ActivityItem extends Component {
 
     endActivity () {
         Service.endActivity(this.state.detail.activity.id);
-        let detail = this.state.detail;
+        let detail= this.state.detail;
         detail.activity.status = 3;
         this.setState({
             detail
@@ -83,7 +80,7 @@ export default class ActivityItem extends Component {
                         source={{uri: this.state.detail.activity.avatar}}
                         style={{width: 40, height: 40, borderRadius: 20}}/>
                     <Text style={{color: "#333", marginLeft: 10}}>{this.state.detail.activity.misName}</Text>
-                    <Text style={{color: "#828282", marginLeft: 10, marginRight: 10}}>{new Date(this.state.detail.activity.ctime).toDateString()}</Text>
+                    <Text style={{color: "#828282", marginLeft: 10, marginRight: 10}}>{moment(this.state.detail.activity.ctime).format('YYYY-MM-DD hh:mm')}</Text>
                       {(()=> {
                         if (this.state.detail.activity.status === 2) {
                             return (
@@ -94,7 +91,7 @@ export default class ActivityItem extends Component {
                                 <Text style={{color: "gray"}}>活动结束</Text>
                             );    
                         } else {
-                                if (!this.state.detail.participate) {
+                                if (!this.detail.participate) {
                                     return (
                                         <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={this.participate.bind(this)}>
                                             <Text style={{color: "red"}}>GO</Text>
@@ -110,24 +107,25 @@ export default class ActivityItem extends Component {
                             }
                             
                         })()}
-                    <Text style={{color: "green", marginLeft: 10}}>{this.state.detail.participateNum}人</Text> 
+                    <Text style={{color: "green", marginLeft: 10}}>{this.state.participateNum}人</Text> 
                 </View>
                 
                 <Text style={styles.text}>
-                    时间: 12121212
+                    时间 : {moment(this.state.detail.activity.startTime).format('YYYY-MM-DD hh:mm')}至
+                    {moment(this.state.detail.activity.endTime).format('YYYY-MM-DD hh:mm')} 
                 </Text>
                 
                 <Text style={styles.text}>
-                    地点: {this.state.detail.activity.location}
+                    地点 : {this.state.detail.activity.location}
                 </Text>
 
                 <Text style={styles.text}>
-                    简介: {this.state.detail.activity.breif}
+                    简介 : {this.state.detail.activity.brief}
                 </Text>
 
 
                 <Text style={styles.text}>
-                    详情: {this.state.detail.activity.content}
+                    详情 : {this.state.detail.activity.content}
                 </Text>
 
                 <Text style={styles.text}>

@@ -34,6 +34,10 @@ export default class Activity extends Component {
         this.loadData();
     }
 
+    componentWillUnMount () {
+        this.mounted = false;
+    }
+    
     loadData () {
         return Service.getActivityList('', 1, 10).then((data) => {
             if (this.mounted) {
@@ -44,9 +48,7 @@ export default class Activity extends Component {
             }
         });
     }
-    componentWillUnMount () {
-        this.mounted = false;
-    }
+
 
     render () {
         let RightComponent = (

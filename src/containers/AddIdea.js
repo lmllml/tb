@@ -115,6 +115,7 @@ export default class AddIdea extends Component {
                     <TextInput 
                         style={{flex: 1, marginLeft: 10, marginRight: 10, textAlign: 'right'}}
                         keyboardType="numeric"
+                        placeholder="输入限定人数"
                         onChangeText={(text) => this.person = text}/>
                 </View>
 
