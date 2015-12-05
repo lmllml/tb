@@ -28,20 +28,12 @@ export default class Home extends Component {
             if (!this.mounted) {
                 return;
             }
-            this.setState({
-                login: false
-            });
+            this.props.navigator.push('login');
         });
     }
 
     componentWillUnMount () {
         this.mounted = false;
-    }
-
-    close () {
-        this.setState({
-            login: true
-        });
     }
 
     select (selectedTab) {
@@ -52,39 +44,34 @@ export default class Home extends Component {
 
     render () {
         return (
-            <View style={{flex: 1}}>
-                <TabBarIOS
-                    tintColor="#d33a5b"
-                    barTintColor="#efefef"
-                    style={{flex: 1}}>
-                    <TabBarIOS.Item
-                        title="点子"
-                        iconName={'fontawesome|lightbulb-o'}
-                        selected={this.state.selectedTab === 'idea'}
-                        onPress={this.select.bind(this, 'idea')}>
-                        <Idea navigator={this.props.navigator}/>
-                    </TabBarIOS.Item>
+            <TabBarIOS
+                tintColor="#d33a5b"
+                barTintColor="#efefef"
+                style={{flex: 1}}>
+                <TabBarIOS.Item
+                    title="点子"
+                    iconName={'fontawesome|lightbulb-o'}
+                    selected={this.state.selectedTab === 'idea'}
+                    onPress={this.select.bind(this, 'idea')}>
+                    <Idea navigator={this.props.navigator}/>
+                </TabBarIOS.Item>
 
-                    <TabBarIOS.Item
-                        title="活动"
-                        iconName={'fontawesome|camera'}
-                        selected={this.state.selectedTab === 'activity'}
-                        onPress={this.select.bind(this, 'activity')}>
-                        <Activity navigator={this.props.navigator}/>
-                    </TabBarIOS.Item>
+                <TabBarIOS.Item
+                    title="活动"
+                    iconName={'fontawesome|camera'}
+                    selected={this.state.selectedTab === 'activity'}
+                    onPress={this.select.bind(this, 'activity')}>
+                    <Activity navigator={this.props.navigator}/>
+                </TabBarIOS.Item>
 
-                    <TabBarIOS.Item
-                        title="我的"
-                        iconName={'fontawesome|user'}
-                        selected={this.state.selectedTab === 'my'}
-                        onPress={this.select.bind(this, 'my')}>
-                        <Account navigator={this.props.navigator}/>
-                    </TabBarIOS.Item>
-                </TabBarIOS>
-                <Modal animated={true} visible={!this.state.login}>
-                    <Login  close={this.close.bind(this)}/>
-                </Modal>
-            </View>
+                <TabBarIOS.Item
+                    title="我的"
+                    iconName={'fontawesome|user'}
+                    selected={this.state.selectedTab === 'my'}
+                    onPress={this.select.bind(this, 'my')}>
+                    <Account navigator={this.props.navigator}/>
+                </TabBarIOS.Item>
+            </TabBarIOS>
         );
     }
 }

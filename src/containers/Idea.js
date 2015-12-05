@@ -89,6 +89,7 @@ export default class Idea extends Component {
                     style={{width: 20, height: 20}}/>
             </TouchableOpacity>
         );
+
         let RightComponent = (
             <TouchableOpacity onPress={this.addIdea.bind(this)}>
                 <Icon
