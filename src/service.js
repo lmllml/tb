@@ -2,11 +2,12 @@
 
 import fetch from './utils/fetch';
 
-const HOST = 'http://localhost:8080';
+const HOST = 'http://10.4.241.122:8080';
 
 let Service = {
     login: (misId) => fetch(HOST + `/api/login?misId=${misId}`),
-    
+    logout: (misId) => fetch(HOST + `/api/logout`),
+
     getAccount: () => fetch(HOST + `/api/my/account`),
 
     getIdeaList: (search, page, size) => fetch(HOST + `/api/idea/list?search=${search}&page=${page}&size=${size}`),

@@ -7,12 +7,13 @@ import React, {
 } from 'react-native';
 
 import IdeaItem from './Item';
+import RefreshableListView from 'react-native-refreshable-listview';
 
 export default class IdeaList extends Component {
     constructor (props) {
         super(props);
 
-        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+        let ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1.id !== r2.id});
         this.state = {
             dataSource: ds.cloneWithRows(this.props.data)
         }
@@ -32,8 +33,9 @@ export default class IdeaList extends Component {
 
     render () {
         return (
-            <ListView
+            <RefreshableListView
                 removeClippedSubviews={true}
+                loadData={this.props.loadData}
                 style={{flex: 1, backgroundColor: '#f2f2f2'}}
                 dataSource={this.state.dataSource}
                 renderRow={this.renderRow.bind(this)}/>

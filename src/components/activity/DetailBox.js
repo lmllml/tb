@@ -79,39 +79,43 @@ export default class ActivityItem extends Component {
                     <Image
                         source={{uri: this.state.detail.activity.avatar}}
                         style={{width: 40, height: 40, borderRadius: 20}}/>
-                    <Text style={{color: "#333", marginLeft: 10}}>{this.state.detail.activity.misName}</Text>
-                    <Text style={{color: "#828282", marginLeft: 10, marginRight: 10}}>{moment(this.state.detail.activity.ctime).format('YYYY-MM-DD hh:mm')}</Text>
-                      {(()=> {
-                        if (this.state.detail.activity.status === 2) {
-                            return (
-                                <Text style={{color: "gray"}}>活动开始</Text>
-                            );    
-                        } else if (this.state.detail.activity.status === 3) {
-                            return (
-                                <Text style={{color: "gray"}}>活动结束</Text>
-                            );    
-                        } else {
-                                if (!this.state.detail.participate) {
-                                    return (
-                                        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={this.participate.bind(this)}>
-                                            <Text style={{color: "red"}}>GO</Text>
-                                        </TouchableOpacity>
-                                    );    
-                                } else {
-                                    return (
-                                        <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={this.unparticipate.bind(this)}>
-                                            <Text style={{color: "gray"}}>NOT GO</Text>
-                                        </TouchableOpacity>
-                                    );
-                                }    
-                            }
-                            
-                        })()}
-                    <Text style={{color: "green", marginLeft: 10}}>{this.state.participateNum}人</Text> 
+                    <View>
+                        <View style={{flexDirection: 'row'}}>
+                        <Text style={{color: "#333", marginLeft: 10, marginRight: 10}}>{this.state.detail.activity.misName}</Text>
+                         {(()=> {
+                            if (this.state.detail.activity.status === 2) {
+                                return (
+                                    <Text style={{color: "gray"}}>活动开始</Text>
+                                );    
+                            } else if (this.state.detail.activity.status === 3) {
+                                return (
+                                    <Text style={{color: "gray"}}>活动结束</Text>
+                                );    
+                            } else {
+                                    if (!this.state.detail.participate) {
+                                        return (
+                                            <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={this.participate.bind(this)}>
+                                                <Text style={{color: "red"}}>GO</Text>
+                                            </TouchableOpacity>
+                                        );    
+                                    } else {
+                                        return (
+                                            <TouchableOpacity style={{flexDirection: 'row', alignItems: 'center'}} onPress={this.unparticipate.bind(this)}>
+                                                <Text style={{color: "gray"}}>NOT GO</Text>
+                                            </TouchableOpacity>
+                                        );
+                                    }    
+                                }
+                                
+                            })()}
+                            </View>
+                        <Text style={{color: "#828282", marginLeft: 10, marginRight: 10}}>{moment(this.state.detail.activity.ctime).format('YYYY-MM-DD hh:mm')}</Text>
+                    </View>
+                    <Text style={{flex: 1, textAlign: 'right', color: "green", marginLeft: 10}}>{this.state.detail.participateNum}人</Text> 
                 </View>
                 
                 <Text style={styles.text}>
-                    时间 : {moment(this.state.detail.activity.startTime).format('YYYY-MM-DD hh:mm')}至
+                    时间 : {moment(this.state.detail.activity.startTime).format('YYYY-MM-DD hh:mm')} - 
                     {moment(this.state.detail.activity.endTime).format('YYYY-MM-DD hh:mm')} 
                 </Text>
                 

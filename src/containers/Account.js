@@ -51,34 +51,44 @@ export default class Account extends Component {
         this.props.navigator.push('myActivity');
     }
 
+    logout () {
+        Service.logout().then(() => {
+            this.props.navigator.push('home');
+        });
+    }
+
     render () {
         return (
             <View style={styles.container}>
                 <View style={styles.up}>
                     <Image
                         source={{uri: this.state.account.avatar}}
-                        style={{width: 60, height: 60, borderRadius: 30, marginBottom: 10}}/>
+                        style={{width: 60, height: 60, borderRadius: 30, marginBottom: 5}}/>
                     
-                    <Text style={{color: "#fff", marginBottom: 10}}>
+                    <Text style={{color: "#fff", marginBottom: 5}}>
                         {this.state.account.name}
                     </Text>
-                    <Text style={{color: "#fff", marginBottom: 10}}>
+                    <Text style={{color: "#fff", marginBottom: 5}}>
                         {this.state.account.mobile}
                     </Text>
-                    <Text style={{color: "#fff"}}>
-                        {this.state.account.orgInfo}
+                    <Text style={{color: "#fff", paddingLeft: 40, paddingRight: 40, textAlign: 'center'}}>
+                        {(() => {
+                            if (this.state.account.orgInfo) {
+                                return this.state.account.orgInfo.slice(1);
+                            }
+                        }())}
                     </Text>
                 </View>
 
-                <TouchableOpacity onPress={this.goToCareIdeaList.bind(this)} style={styles.section}>
+                <TouchableOpacity onPress={this.goToCareIdeaList.bind(this)} style={[styles.section, {borderTopWidth: 1, borderColor: '#e6e6e6'}]}>
                     <Text style={styles.sectionTitle}>
                         我关注的点子
                     </Text>
 
                     <Icon
-                        name={"fontawesome|chevron-right"}
+                        name={"fontawesome|angle-right"}
                         size={20}
-                        color="#000"
+                        color="#b3b3b3"
                         style={{width: 20, height: 20}}/>
                 </TouchableOpacity> 
 
@@ -88,9 +98,9 @@ export default class Account extends Component {
                     </Text>
 
                     <Icon
-                        name={"fontawesome|chevron-right"}
+                        name={"fontawesome|angle-right"}
                         size={20}
-                        color="#000"
+                        color="#b3b3b3"
                         style={{width: 20, height: 20}}/>
                 </TouchableOpacity>
                 
@@ -101,11 +111,15 @@ export default class Account extends Component {
                     </Text>
 
                     <Icon
-                        name={"fontawesome|chevron-right"}
+                        name={"fontawesome|angle-right"}
                         size={20}
-                        color="#000 "
+                        color="#b3b3b3"
                         style={{width: 20, height: 20}}/>
                 </TouchableOpacity> 
+
+                <TouchableOpacity onPress={this.logout.bind(this)} style={{height: 40, marginTop: 20, backgroundColor: "#fff", justifyContent: "center"}}>
+                    <Text style={{color: "red", textAlign: 'center'}}>退出登录</Text>
+                </TouchableOpacity>
             </View>
         );
         
@@ -119,22 +133,25 @@ const styles = StyleSheet.create({
     },
     up: {
         paddingTop: 20,
-        height: 200,
+        height: 180,
         backgroundColor: "#b02633",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
+        marginBottom: 20
     },
     section: {
-        height: 60,
+        height: 40,
         paddingLeft: 10,
         paddingRight: 10,
         flexDirection: 'row',
         alignItems: "center",
-        marginBottom: 20,
         backgroundColor: "#fff",
+        borderColor: '#e6e6e6',
+        borderBottomWidth: 1
     },
 
     sectionTitle: {
-        flex: 1
+        flex: 1,
+        color: "#4b4b4b"
     }
 });

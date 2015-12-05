@@ -7,7 +7,8 @@ import React, {
     Text,
     Image,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    AlertIOS
 } from 'react-native';
 
 import Service from '../service';
@@ -24,7 +25,9 @@ export default class Login extends Component {
 
     login () {
         Service.login(this.state.misId).then(() => {
-            this.props.navigator.push('home');
+            this.props.close();
+        }).catch((error) => {
+            AlertIOS.alert(error.message);
         });
     }
 

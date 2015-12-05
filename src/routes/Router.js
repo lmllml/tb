@@ -32,7 +32,6 @@ export default class Router {
                 let func = navigator[key];
                 map[key] = function () {
                     let route = resolve.apply(null, arguments);
-                    console.log(route);
                     return func(route);
                 };
             });
@@ -54,7 +53,7 @@ export default class Router {
 }
 
 Router.initialRoute = {
-    name: 'login',
+    name: 'home',
     index: 0,
-    component: routeMap['login']
+    component: routeMap['home']
 }

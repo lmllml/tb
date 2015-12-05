@@ -29,6 +29,9 @@ export default class AddIdea extends Component {
 
 
     submitIdea () {
+        if (!this.allRequire()) {
+            return;
+        }
         Service.submitIdea(this.state.date.getTime(), this.content, this.person).then((idea) => {
             this.props.onSubmitIdea(idea);
         });
@@ -53,6 +56,10 @@ export default class AddIdea extends Component {
         this.cancel();
     }
 
+    allRequire () {
+        return this.state.date && this.content && this.person;
+    }
+
     render () {
         let leftComponent = (
             <TouchableOpacity onPress={this.props.close}>
@@ -60,68 +67,68 @@ export default class AddIdea extends Component {
             </TouchableOpacity>
         );
 
+
+        
         let rightComponent = (
             <TouchableOpacity onPress={this.submitIdea.bind(this)}>
                 <Text style={{color: "#20d81f", fontSize: 15}}>发送</Text>
             </TouchableOpacity>
         );
+        
 
         return (
 
             <View style={styles.container}>
                 <Header title="发表点子" LeftComponent={leftComponent} RightComponent={rightComponent}/>
-                <Delay>
-                    <TextInput onChangeText={(text) => this.content = text} multiline={true} maxLength={150} style={styles.textInput}/>
-                    <TouchableHighlight style={{marginBottom: 10}} onPress={this.showDatePicker.bind(this)}>
-                        <View style={styles.section}>
-                            <Icon
-                                name={"fontawesome|clock-o"}
-                                size={20}
-                                color={"#888"}
-                                style={{width: 20, height: 20, marginRight: 15}}/>
-
-                            <Text style={[styles.sectionTitle, {flex: 1}]}>
-                                截止时间
-                            </Text>
-                            {(() => {
-                                if (this.state.date) {
-                                    return (
-                                        <Text style={{color: "#888", marginRight: 10}}>
-                                            {moment(this.state.date).format('YYYY-MM-DD HH:mm')}
-                                        </Text>
-                                    )
-                                }
-                            })()}
-                            <Icon
-                                name={"fontawesome|chevron-right"}
-                                size={20}
-                                color={"#c7c7cc"}
-                                style={{width: 20, height: 20}}/>
-                        </View>
-                    </TouchableHighlight>
-
-                    <View style={[styles.section, {marginBottom: 10}]}>
+                <TextInput onChangeText={(text) => this.content = text} multiline={true} maxLength={150} style={styles.textInput}/>
+                <TouchableHighlight style={{marginBottom: 10}} onPress={this.showDatePicker.bind(this)}>
+                    <View style={styles.section}>
                         <Icon
-                            name={"fontawesome|users"}
+                            name={"fontawesome|clock-o"}
                             size={20}
                             color={"#888"}
                             style={{width: 20, height: 20, marginRight: 15}}/>
-                       
-                        <Text style={styles.sectionTitle}>限定人数</Text>
 
-                        <TextInput 
-                            style={{flex: 1, marginLeft: 10, marginRight: 10, textAlign: 'right'}}
-                            keyboardType="numeric"
-                            placeholder="输入限定人数"
-                            onChangeText={(text) => this.person = text}/>
+                        <Text style={[styles.sectionTitle, {flex: 1}]}>
+                            截止时间
+                        </Text>
+                        {(() => {
+                            if (this.state.date) {
+                                return (
+                                    <Text style={{color: "#888", marginRight: 10}}>
+                                        {moment(this.state.date).format('YYYY-MM-DD HH:mm')}
+                                    </Text>
+                                )
+                            }
+                        })()}
+                        <Icon
+                            name={"fontawesome|chevron-right"}
+                            size={20}
+                            color={"#c7c7cc"}
+                            style={{width: 20, height: 20}}/>
                     </View>
+                </TouchableHighlight>
 
-                    <DatePicker
+                <View style={[styles.section, {marginBottom: 10}]}>
+                    <Icon
+                        name={"fontawesome|users"}
+                        size={20}
+                        color={"#888"}
+                        style={{width: 20, height: 20, marginRight: 15}}/>
+                   
+                    <Text style={styles.sectionTitle}>限定人数</Text>
+
+                    <TextInput 
+                        style={{flex: 1, marginLeft: 10, marginRight: 10, textAlign: 'right'}}
+                        keyboardType="numeric"
+                        placeholder="输入限定人数"
+                        onChangeText={(text) => this.person = text}/>
+                </View>
+                 <DatePicker
                         date={this.state.date}
                         visible={this.state.datePicker}
                         cancel={this.cancel.bind(this)}
                         confirm={this.confirm.bind(this)}/>
-                </Delay>
             </View>
         )
     }

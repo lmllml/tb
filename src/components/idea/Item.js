@@ -68,21 +68,27 @@ export default class IdeaItem extends Component {
         });
     }
 
+
     render () {
+        let Container = View;
+
+        if (!this.state.noComment) {
+            Container = TouchableHighlight;
+        }
+        
         return (
-            <TouchableHighlight underlayColor="#efefef" onPress={this.goToIdeaDetail.bind(this)} style={styles.container}>
+            <Container underlayColor="#efefef" onPress={this.goToIdeaDetail.bind(this)} style={styles.container}>
                 <View>
                     <View style={styles.up}>
                         <Image
                             source={{uri: this.props.idea.avatar}}
                             style={{width: 40, height: 40, borderRadius: 20, marginRight: 10}}/>
-                        
-                        <Text>{this.props.idea.misName}</Text>
-                        <Text style={{marginLeft: 10, color: "#828282"}}>{moment(this.props.idea.expireTime).format('YYYY-MM-DD hh:mm')}前有效</Text>
-                        <View style={{flexDirection: 'row', alignItems: 'center', flex: 1, justifyContent: 'flex-end'}}>
-                            <Text style={{marginLeft: 10}}>
-                                <Text style={{color: "red"}}>{this.state.participateNum}</Text>/<Text style={{color: "green"}}>{this.props.idea.limit}</Text>
-                            </Text>
+                        <View>
+                            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                                <Text style={{color: "#333"}}>{this.props.idea.misName}</Text>
+                                <Text style={{marginLeft: 10, color: "#828282"}}>{this.state.participateNum}/{this.props.idea.targetNum}</Text>
+                            </View>
+                            <Text style={{color: "#828282"}}>{moment(this.props.idea.expireTime).format('YYYY-MM-DD hh:mm')}前有效</Text>
                         </View>
                     </View>
 
@@ -111,7 +117,7 @@ export default class IdeaItem extends Component {
                             if (!this.state.participate) {
                                 return (
                                     <TouchableOpacity onPress={this.participate.bind(this)}>
-                                        <Text style={{color: "red"}}>GO</Text>
+                                        <Text style={{color: "#e14123"}}>GO</Text>
                                     </TouchableOpacity>
                                 );    
                             } else {
@@ -151,7 +157,7 @@ export default class IdeaItem extends Component {
                         
                     </View>
                 </View>
-            </TouchableHighlight>
+            </Container>
 
         );
     }
@@ -180,7 +186,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         padding: 5,
-        borderColor: "#897d73",
+        borderColor: "#e6e6e6",
         borderTopWidth: 1
     }
 });

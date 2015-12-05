@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         padding: 5,
-        borderColor: "#897d73",
+        borderColor: "#e6e6e6",
         borderTopWidth: 1
     },
     text: {color: "#5d5d5d", marginTop: 10, marginBottom: 10}

@@ -28,6 +28,7 @@ export default class IdeaSearch extends Component {
 
     componentWillUnMount () {
         this.mounted = false;
+        StatusBarIOS.setStyle('light-content');
     }
 
     componentDidMount () {

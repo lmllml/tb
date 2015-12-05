@@ -31,6 +31,9 @@ export default class Idea extends Component {
 
     componentDidMount () {
         this.mounted = true;
+        this.setState({
+            loadingIdea: true
+        });
         this.fetchIdea();        
     }
 
@@ -40,10 +43,8 @@ export default class Idea extends Component {
 
     fetchIdea () {
         let self = this;
-        this.setState({
-            loadingIdea: true
-        });
-        Service.getIdeaList('', 1, 100).then((data) => {
+        
+        return Service.getIdeaList('', 1, 100).then((data) => {
             if (self.mounted) {
                 self.setState({
                     ideaList: data,
@@ -67,7 +68,7 @@ export default class Idea extends Component {
 
     onSubmitIdea (idea) {
         let ideaList = this.state.ideaList;
-        ideaList = ideaList.unshift(idea);
+        ideaList = [idea].concat(ideaList);
         this.setState({
             ideaList
         });
@@ -101,14 +102,6 @@ export default class Idea extends Component {
         return (
             <View style={styles.container}>
                 <Header title="点子" LeftComponent={LeftComponent} RightComponent={RightComponent}/>
-                <TouchableOpacity style={styles.suspension} onPress={this.fetchIdea.bind(this)}>
-                    <Text style={{marginRight: 10}}>换一拨</Text>
-                    <Icon
-                        name="fontawesome|refresh"
-                        size={20}
-                        color="#7a7a7a"
-                        style={{width: 20, height: 20, marginRight: 10}}/>
-                </TouchableOpacity>
                 {(() => {
                     if (this.state.loadingIdea) {
                         return (
@@ -116,7 +109,7 @@ export default class Idea extends Component {
                         )
                     } else {
                         return (
-                            <IdeaList refreshItem={this.refreshItem} data={this.state.ideaList} navigator={this.props.navigator}/>
+                            <IdeaList data={this.state.ideaList} loadData = {this.fetchIdea.bind(this)} navigator={this.props.navigator}/>
                         );
                     }
                 })()}
@@ -148,6 +141,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#fff',
         borderBottomWidth: 1,
-        borderColor: "#b2b2b2"
+        borderColor: "#e6e6e6"
     }
 });
