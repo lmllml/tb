@@ -26,6 +26,16 @@ export default class IdeaItem extends Component {
         }
     }
 
+    componentWillReceiveProps (props) {
+        this.setState({
+            isPraise: props.idea.praise,
+            praiseNum: props.idea.praiseNum,
+            commentNum: props.idea.commentNum,
+            participate: props.idea.participate,
+            participateNum: props.idea.participateNum
+        });
+    }
+
     goToIdeaDetail () {
         this.props.navigator.push('ideaDetail', {id: this.props.idea.id});
     }
@@ -75,7 +85,7 @@ export default class IdeaItem extends Component {
         if (!this.state.noComment) {
             Container = TouchableHighlight;
         }
-        
+
         return (
             <Container underlayColor="#efefef" onPress={this.goToIdeaDetail.bind(this)} style={styles.container}>
                 <View>
