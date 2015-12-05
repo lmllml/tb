@@ -25,7 +25,7 @@ export default class Login extends Component {
 
     login () {
         Service.login(this.state.misId).then(() => {
-            this.props.close();
+            this.props.navigator.push('home');
         }).catch((error) => {
             AlertIOS.alert(error.message);
         });
