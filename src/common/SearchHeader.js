@@ -18,7 +18,7 @@ export default class SearchHeader extends Component {
     render () {
         return (
             <View style={styles.header}>
-                <TouchableOpacity onPress={() => this.props.navigator.pop()}>
+                <TouchableOpacity style={{width: 50, height: 45, justifyContent: 'center', alignItems: 'center'}} onPress={() => this.props.navigator.pop()}>
                     <Icon 
                         name={"fontawesome|chevron-left"}
                         size={20}

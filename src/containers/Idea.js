@@ -43,7 +43,7 @@ export default class Idea extends Component {
 
     fetchIdea () {
         let self = this;
-        
+
         return Service.getIdeaList('', 1, 100).then((data) => {
             if (self.mounted) {
                 self.setState({
@@ -81,7 +81,7 @@ export default class Idea extends Component {
 
     render () {
         let LeftComponent = (
-            <TouchableOpacity onPress={this.goToIdeaSearch.bind(this)}>
+            <TouchableOpacity style={{width: 50, height: 45, justifyContent: 'center', alignItems: 'center'}} onPress={this.goToIdeaSearch.bind(this)}>
                 <Icon
                     name="fontawesome|search"
                     size={20}
@@ -91,7 +91,7 @@ export default class Idea extends Component {
         );
 
         let RightComponent = (
-            <TouchableOpacity onPress={this.addIdea.bind(this)}>
+            <TouchableOpacity style={{width: 50, height: 45, justifyContent: 'center', alignItems: 'center'}} onPress={this.addIdea.bind(this)}>
                 <Icon
                     name="fontawesome|plus"
                     size={20}
@@ -110,7 +110,7 @@ export default class Idea extends Component {
                         )
                     } else {
                         return (
-                            <IdeaList data={this.state.ideaList} loadData = {this.fetchIdea.bind(this)} navigator={this.props.navigator}/>
+                            <IdeaList data={this.state.ideaList} loadData={this.fetchIdea.bind(this)} navigator={this.props.navigator}/>
                         );
                     }
                 })()}

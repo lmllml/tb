@@ -62,7 +62,7 @@ export default class AddIdea extends Component {
 
     render () {
         let leftComponent = (
-            <TouchableOpacity onPress={this.props.close}>
+            <TouchableOpacity style={{width: 50, height: 45, justifyContent: 'center', alignItems: 'center'}} onPress={this.props.close}>
                 <Text style={{color: "#fff", fontSize: 15}}>取消</Text>
             </TouchableOpacity>
         );
@@ -70,7 +70,7 @@ export default class AddIdea extends Component {
 
         
         let rightComponent = (
-            <TouchableOpacity onPress={this.submitIdea.bind(this)}>
+            <TouchableOpacity style={{width: 50, height: 45, justifyContent: 'center', alignItems: 'center'}} onPress={this.submitIdea.bind(this)}>
                 <Text style={{color: "#20d81f", fontSize: 15}}>发送</Text>
             </TouchableOpacity>
         );

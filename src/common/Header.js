@@ -20,7 +20,7 @@ export default class Header extends Component {
                     {(() => {
                         if (this.props.hasBack && this.props.navigator) {
                             return (
-                                <TouchableOpacity  onPress={() => {
+                                <TouchableOpacity style={{width: 50, height: 45, justifyContent: 'center', alignItems: 'center'}} onPress={() => {
                                     this.props.navigator.pop();
                                 }}>
                                     <Icon
@@ -55,6 +55,7 @@ const styles = StyleSheet.create({
     },
     leftComponent:  {
         width: 50,
+        height: 45,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -66,6 +67,7 @@ const styles = StyleSheet.create({
     },
     rightComponent: {
         width: 50,
+        height: 45,
         justifyContent: 'center',
         alignItems: 'center'
     }

@@ -52,7 +52,7 @@ export default class Activity extends Component {
 
     render () {
         let RightComponent = (
-            <TouchableOpacity onPress={this.goToActivitySearch.bind(this)}>
+            <TouchableOpacity style={{width: 50, height: 45, justifyContent: 'center', alignItems: 'center'}} onPress={this.goToActivitySearch.bind(this)}>
                 <Icon
                     name="fontawesome|search"
                     size={20}
