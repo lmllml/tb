@@ -37,10 +37,16 @@ export default class IdeaItem extends Component {
     }
 
     goToIdeaDetail () {
+        if (!this.props.navigator) {
+            return;
+        }
         this.props.navigator.push('ideaDetail', {id: this.props.idea.id});
     }
 
     goToComment () {
+        if (!this.props.navigator) {
+            return;
+        }
         this.props.navigator.push('ideaDetail', {id: this.props.idea.id, comment: true});
     }
     
@@ -80,14 +86,8 @@ export default class IdeaItem extends Component {
 
 
     render () {
-        let Container = View;
-
-        if (!this.state.noComment) {
-            Container = TouchableHighlight;
-        }
-
         return (
-            <Container underlayColor="#efefef" onPress={this.goToIdeaDetail.bind(this)} style={styles.container}>
+            <TouchableHighlight underlayColor="#efefef" onPress={this.goToIdeaDetail.bind(this)} style={styles.container}>
                 <View>
                     <View style={styles.up}>
                         <Image
@@ -167,7 +167,7 @@ export default class IdeaItem extends Component {
                         
                     </View>
                 </View>
-            </Container>
+            </TouchableHighlight>
 
         );
     }
